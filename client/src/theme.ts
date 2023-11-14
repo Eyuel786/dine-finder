@@ -14,6 +14,11 @@ const theme = createTheme({
       defaultProps: {
         disableRipple: true,
       },
+      styleOverrides: {
+        root: {
+          letterSpacing: "1px",
+        },
+      },
     },
     MuiIconButton: {
       defaultProps: {

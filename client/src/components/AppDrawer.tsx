@@ -21,16 +21,16 @@ const MyListItemButton = styled(ListItemButton)(({ theme }) => ({
 })) as typeof ListItemButton;
 
 const SignInBtn = styled(ListItemButton)(({ theme }) => ({
-  background: theme.palette.secondary.main,
+  background: theme.palette.primary.main,
   color: "#fff",
   "&:active": {
-    background: theme.palette.secondary.main,
+    background: theme.palette.primary.main,
   },
   "&.Mui-selected": {
-    color: theme.palette.primary.main,
-    background: theme.palette.secondary.light,
+    color: theme.palette.secondary.light,
+    background: theme.palette.primary.light,
     "&:active": {
-      background: theme.palette.secondary.main,
+      background: theme.palette.primary.main,
     },
   },
 })) as typeof ListItemButton;

@@ -2,7 +2,6 @@ import { useState, SyntheticEvent, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Container,
   Tabs,
   Tab,
@@ -15,10 +14,11 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import { Link, useLocation } from "react-router-dom";
 import AppDrawer from "./AppDrawer";
 import TABS from "../utils/myTabs";
+import { LogoContainer, LogoText } from "../utils/MyStyledComponents";
 
 const MyAppBar = styled(AppBar)(({ theme }) => ({
   zIndex: theme.zIndex.modal + 1,
-  background: "#fff",
+  background: "rgba(255,255,255,0.9)",
 })) as typeof AppBar;
 
 const MyTabs = styled(Tabs)(() => ({
@@ -32,27 +32,9 @@ const MyTab = styled(Tab)(() => ({
   fontSize: "1.1rem",
 })) as typeof Tab;
 
-const LogoContainer = styled("div")(() => ({
-  display: "flex",
-  gap: "0.5rem",
-  alignItems: "center",
-  userSelect: "none",
-}));
-
-const LogoText = styled(Typography)(({ theme }) => ({
-  fontSize: "2.4rem",
-  color: theme.palette.primary.main,
-  fontWeight: 700,
-  [theme.breakpoints.down("md")]: {
-    fontSize: "1.6rem",
-  },
-})) as typeof Typography;
-
 const SignInBtn = styled(Button)(() => ({
   color: "#fff",
-  borderRadius: "50px",
-  fontSize: "1rem",
-  padding: "0.4rem 1.4rem",
+  fontSize: "1.1rem",
   minWidth: "97px",
 })) as typeof Button;
 
@@ -121,7 +103,7 @@ export default function Navbar() {
             {matchesMd && (
               <SignInBtn
                 variant="contained"
-                color="secondary"
+                color="primary"
                 component={Link}
                 to="/signin"
               >
