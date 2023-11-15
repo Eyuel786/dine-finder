@@ -1,12 +1,5 @@
 import { Document, Schema, model } from "mongoose";
-
-enum Cuisine {
-  ITALIAN = "Italian",
-  CHINESE = "Chinese",
-  FRENCH = "French",
-  INDIAN = "Indian",
-  THAI = "Thai",
-}
+import Cuisine from "../types/Cuisine";
 
 interface IRestaurant extends Document {
   name: string;
