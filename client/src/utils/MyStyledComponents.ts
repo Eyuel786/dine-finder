@@ -17,9 +17,12 @@ export const LogoText = styled(Typography)(({ theme }) => ({
   },
 })) as typeof Typography;
 
-export const PageTitle = styled(Typography)(() => ({
+export const PageTitle = styled(Typography)(({ theme }) => ({
   fontSize: "2.4rem",
   fontWeight: 600,
   textAlign: "center",
   marginBottom: "2.5rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "2rem",
+  },
 })) as typeof Typography;

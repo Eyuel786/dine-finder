@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import RestaurantForm from "../components/RestaurantForm";
-import { restaurantsActions, useAppDispatch, useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import Restaurant from "../types/Restaurant";
+import { sendUpdatedRestaurant } from "../store/restaurants.thunks";
 
 export default function EditRestaurant() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ export default function EditRestaurant() {
   const restaurant = restaurants.find((r) => r.id === id);
 
   const updateRestaurant = (id: string, restaurant: Restaurant) =>
-    dispatch(restaurantsActions.update({ id, restaurant }));
+    dispatch(sendUpdatedRestaurant({id, restaurant}));
 
   return (
     <>

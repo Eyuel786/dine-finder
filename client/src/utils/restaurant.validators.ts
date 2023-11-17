@@ -11,14 +11,19 @@ export const validateName = (value: string) => {
 export const validateAddress = (value: string) => {
   const address = value.trim();
   let errorMessage = checkRequired("Address", address);
-  if (errorMessage) return errorMessage;
-  errorMessage = checkLength("Address", address, 3, 50);
   return errorMessage;
 };
 
 export const validateImage = (value: string) => {
   const image = value.trim();
   let errorMessage = checkRequired("Image", image);
+  if (errorMessage) return errorMessage;
+  try {
+    new URL(image);
+    return null;
+  } catch (error) {
+    errorMessage = "Invalid image url";
+  }
   return errorMessage;
 };
 

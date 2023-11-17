@@ -9,4 +9,7 @@ export const restaurantSchema = Joi.object({
   address: Joi.string().required(),
   image: Joi.string().uri().required(),
   description: Joi.string().min(50).required(),
+  _id: Joi.string(),
+  id: Joi.string(),
+  __v: Joi.number(),
 });

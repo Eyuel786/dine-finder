@@ -38,7 +38,7 @@ export default function AllRestaurants() {
         <div key={r.name}>
           <Card elevation={0}>
             <Grid container>
-              <Grid item md={5}>
+              <Grid item xs={12} sm={5}>
                 <CardMedia
                   component="img"
                   src={r.image}
@@ -46,7 +46,7 @@ export default function AllRestaurants() {
                   height="210"
                 />
               </Grid>
-              <Grid item md={7}>
+              <Grid item xs={12} sm={7}>
                 <CardContent>
                   <CardTitle>{r.name}</CardTitle>
                   <Typography variant="subtitle2">{r.cuisine}</Typography>

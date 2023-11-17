@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { restaurantsSlice, restaurantsActions } from "./restaurants.slice";
+import { restaurantsSlice } from "./restaurants.slice";
 import { TypedUseSelectorHook, useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
@@ -13,4 +13,3 @@ type AppDispatch = typeof store.dispatch;
 type RootState = ReturnType<typeof store.getState>;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-export { restaurantsActions };

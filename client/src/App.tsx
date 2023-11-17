@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -6,8 +7,16 @@ import RestaurantDetail from "./pages/RestaurantDetail";
 import NotFound from "./pages/NotFound";
 import AddRestaurant from "./pages/AddRestaurant";
 import EditRestaurant from "./pages/EditRestaurant";
+import { useAppDispatch } from "./store";
+import { fetchAllRestaurants } from "./store/restaurants.thunks";
 
 function App() {
+  const appDispatch = useAppDispatch();
+
+  useEffect(() => {
+    appDispatch(fetchAllRestaurants());
+  }, []);
+
   return (
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
