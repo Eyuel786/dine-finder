@@ -7,11 +7,14 @@ import RestaurantDetail from "./pages/RestaurantDetail";
 import NotFound from "./pages/NotFound";
 import AddRestaurant from "./pages/AddRestaurant";
 import EditRestaurant from "./pages/EditRestaurant";
-import { useAppDispatch } from "./store";
+import { useAppDispatch, useAppSelector } from "./store";
 import { fetchAllRestaurants } from "./store/restaurants.thunks";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 
 function App() {
   const appDispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     appDispatch(fetchAllRestaurants());
@@ -21,7 +24,7 @@ function App() {
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      <Navbar />
+      <Navbar user={user} />
       <Routes>
         <Route path="/" element={<div>Home</div>} />
         <Route path="/restaurants" element={<AllRestaurants />} />
@@ -30,7 +33,8 @@ function App() {
         <Route path="/restaurants/:id/edit" element={<EditRestaurant />} />
         <Route path="/about" element={<div>About us</div>} />
         <Route path="/contact" element={<div>Contact us</div>} />
-        <Route path="/signin" element={<div>Sign in</div>} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/Signup" element={<SignUp />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
