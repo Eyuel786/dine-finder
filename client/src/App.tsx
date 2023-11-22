@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AllRestaurants from "./pages/AllRestaurants";
@@ -11,19 +12,25 @@ import { useAppDispatch, useAppSelector } from "./store";
 import { fetchAllRestaurants } from "./store/restaurants.thunks";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import useAuth from "./hooks/useAuth";
+
+const MainContainer = styled("div")(() => ({
+  display: "flex",
+  flexDirection: "column",
+  minHeight: "100vh",
+}));
 
 function App() {
-  const appDispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  useAuth(user);
 
   useEffect(() => {
-    appDispatch(fetchAllRestaurants());
-  }, []);
+    dispatch(fetchAllRestaurants());
+  }, [fetchAllRestaurants]);
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-    >
+    <MainContainer>
       <Navbar user={user} />
       <Routes>
         <Route path="/" element={<div>Home</div>} />
@@ -38,7 +45,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
-    </div>
+    </MainContainer>
   );
 }
 

@@ -20,7 +20,7 @@ import TABS from "../utils/myTabs";
 import { LogoContainer, LogoText } from "../utils/MyStyledComponents";
 import User from "../types/User";
 import { useAppDispatch } from "../store";
-import { authActions } from "../store/auth.slice";
+import { signOut } from "../store/auth.slice";
 
 const MyAppBar = styled(AppBar)(({ theme }) => ({
   zIndex: theme.zIndex.modal + 1,
@@ -74,7 +74,7 @@ export default function Navbar({ user }: { user: User }) {
   const closeDrawer = () => setOpenDrawer(false);
   const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
-  const logout = () => dispatch(authActions.logout());
+  const logout = () => dispatch(signOut());
 
   useEffect(() => {
     const index = TABS.findIndex((p) => p.pathname === location.pathname);

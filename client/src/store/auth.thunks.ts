@@ -14,6 +14,7 @@ export const sendSignUpRequest = createAsyncThunk<
         person: userData,
       }
     );
+    localStorage.setItem("dine-finder-user", JSON.stringify(data));
     return data;
   } catch (error) {
     return rejectWithValue("Failed to send sign up request");
@@ -29,6 +30,7 @@ export const sendSignInRequest = createAsyncThunk<
     const { data } = await axios.post<User>("http://127.0.0.1:3000/api/login", {
       user: userData,
     });
+    localStorage.setItem("dine-finder-user", JSON.stringify(data));
     return data;
   } catch (error) {
     return rejectWithValue("Failed to send sign in request");

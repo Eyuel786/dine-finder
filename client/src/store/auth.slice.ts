@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import User from "../types/User";
 import { sendSignInRequest, sendSignUpRequest } from "./auth.thunks";
 
@@ -26,7 +26,15 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    startLoading: (state) => {
+      state.status = "pending";
+    },
+    login: (state, action: PayloadAction<User>) => {
+      state.status = "fulfilled";
+      state.user = { ...action.payload };
+    },
     logout: (state) => {
+      state.status = "fulfilled";
       state.user = initUser;
     },
   },
@@ -60,3 +68,10 @@ export const authSlice = createSlice({
 });
 
 export const authActions = authSlice.actions;
+
+export const signOut = () => {
+  return (dispatch: any) => {
+    localStorage.removeItem("dine-finder-user");
+    dispatch(authActions.logout());
+  };
+};
