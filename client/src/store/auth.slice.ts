@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import User from "../types/User";
 import { sendSignInRequest, sendSignUpRequest } from "./auth.thunks";
+import { AppDispatch } from ".";
 
 interface AuthState {
   status: "idle" | "pending" | "fulfilled" | "rejected";
@@ -70,7 +71,7 @@ export const authSlice = createSlice({
 export const authActions = authSlice.actions;
 
 export const signOut = () => {
-  return (dispatch: any) => {
+  return (dispatch: AppDispatch) => {
     localStorage.removeItem("dine-finder-user");
     dispatch(authActions.logout());
   };

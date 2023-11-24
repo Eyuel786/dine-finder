@@ -11,7 +11,9 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/material/styles";
 import { Link, useLocation } from "react-router-dom";
-import TABS from "../utils/myTabs";
+import User from "../types/User";
+import { useAppDispatch } from "../store";
+import { signOut } from "../store/auth.slice";
 
 const MyListItemButton = styled(ListItemButton)(({ theme }) => ({
   color: theme.palette.grey[600],
@@ -20,15 +22,21 @@ const MyListItemButton = styled(ListItemButton)(({ theme }) => ({
   },
 })) as typeof ListItemButton;
 
-const SignInBtn = styled(ListItemButton)(({ theme }) => ({
+const AuthBtn = styled(ListItemButton)(({ theme }) => ({
   background: theme.palette.primary.main,
   color: "#fff",
+  "&:hover": {
+    background: theme.palette.primary.main,
+  },
   "&:active": {
     background: theme.palette.primary.main,
   },
   "&.Mui-selected": {
     color: theme.palette.secondary.light,
     background: theme.palette.primary.light,
+    "&:hover": {
+      background: theme.palette.primary.main,
+    },
     "&:active": {
       background: theme.palette.primary.main,
     },
@@ -48,6 +56,8 @@ const MyListItemText = styled(ListItemText)(({ theme }) => ({
 interface AppDrawerProps {
   open: boolean;
   selectedTab: boolean | number;
+  user: User;
+  myPaths: { name: string; pathname: string }[];
   onOpen: () => void;
   onClose: () => void;
   onToggle: () => void;
@@ -56,6 +66,8 @@ interface AppDrawerProps {
 export default function AppDrawer({
   open,
   selectedTab,
+  myPaths,
+  user,
   onOpen,
   onClose,
   onToggle,
@@ -63,9 +75,12 @@ export default function AppDrawer({
   const location = useLocation();
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.up("md"));
+  const dispatch = useAppDispatch();
   const iOS =
     typeof navigator !== "undefined" &&
     /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  const logout = () => dispatch(signOut());
 
   return (
     <>
@@ -78,26 +93,43 @@ export default function AppDrawer({
       >
         <Toolbar variant={matchesMd ? "regular" : "dense"} />
         <List>
-          {TABS.map((p, index) => (
+          {myPaths.map((p, index) => (
             <MyListItemButton
               key={p.name}
               selected={selectedTab === index}
               component={Link}
               to={p.pathname}
               onClick={onClose}
+              disableRipple
               divider
             >
               <MyListItemText primary={p.name} disableTypography />
             </MyListItemButton>
           ))}
-          <SignInBtn
-            selected={location.pathname === "/signin"}
-            onClick={onClose}
-            component={Link}
-            to="/signin"
-          >
-            <MyListItemText primary="Sign in" disableTypography />
-          </SignInBtn>
+          {!user.token && (
+            <AuthBtn
+              selected={location.pathname === "/signin"}
+              onClick={onClose}
+              component={Link}
+              to="/signin"
+              disableRipple
+            >
+              <MyListItemText primary="Sign in" disableTypography />
+            </AuthBtn>
+          )}
+
+          {user.token && (
+            <AuthBtn
+              selected={location.pathname === "/signin"}
+              onClick={() => {
+                onClose();
+                logout();
+              }}
+              disableRipple
+            >
+              <MyListItemText primary="Sign out" disableTypography />
+            </AuthBtn>
+          )}
         </List>
       </SwipeableDrawer>
       <IconButton onClick={onToggle} sx={{ mr: 1 }}>

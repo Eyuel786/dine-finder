@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { personSchema, restaurantSchema, userSchema } from "./schemas";
 import AppError from "./AppError";
 import Restaurant from "../models/Restaurant";
@@ -67,6 +68,33 @@ export const signInUser = wrapAsync(async (req, _, next) => {
   const passwordMatches = await bcrypt.compare(password, user.password);
   if (!passwordMatches) {
     return next(new AppError("Invalid credentials", 400));
+  }
+
+  next();
+});
+
+export const isAuthenticated = wrapAsync(async (req, res, next) => {
+  if (!req.headers.authorization) {
+    return next(new AppError("You are not authenticated", 401));
+  }
+
+  const token = req.headers.authorization.split(" ")[1];
+  if (!token) {
+    return next(new AppError("You are not authenticated", 401));
+  }
+
+  req.user = jwt.verify(token, process.env.JWT_PRIVATE_KEY!) as Record<
+    string,
+    any
+  >;
+
+  next();
+});
+
+export const isRestaurantAuthor = wrapAsync(async (req, res, next) => {
+  const restaurant = await Restaurant.findById(req.params.id);
+  if (!restaurant!.author.equals(req.user!.userId)) {
+    return next(new AppError("You are not authorized", 403));
   }
 
   next();

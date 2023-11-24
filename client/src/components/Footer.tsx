@@ -30,7 +30,7 @@ export default function Footer() {
                 color="primary"
                 fontSize={matchesMd ? "large" : "medium"}
               />
-              <LogoText>DineAdvisor</LogoText>
+              <LogoText>DineFinder</LogoText>
             </LogoContainer>
           </Grid>
           {[

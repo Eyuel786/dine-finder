@@ -7,24 +7,27 @@ interface IUser extends Document {
   password: string;
 }
 
-const userSchema = new Schema<IUser>({
-  username: {
-    type: String,
-    required: true,
-    minLength: 3,
-  },
-  email: {
-    type: String,
-    required: true,
-    validate: {
-      validator: (value: string) => emailPattern.test(value),
-      message: "Email is invalid",
+const userSchema = new Schema<IUser>(
+  {
+    username: {
+      type: String,
+      required: true,
+      minLength: 3,
+    },
+    email: {
+      type: String,
+      required: true,
+      validate: {
+        validator: (value: string) => emailPattern.test(value),
+        message: "Email is invalid",
+      },
+    },
+    password: {
+      type: String,
+      required: true,
     },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  { timestamps: true }
+);
 
 export default model<IUser>("User", userSchema);

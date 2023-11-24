@@ -7,6 +7,8 @@ import cors from "cors";
 import Restaurant from "./models/Restaurant";
 import wrapAsync from "./utils/wrapAsync";
 import {
+  isAuthenticated,
+  isRestaurantAuthor,
   isUsernameAndEmailUnique,
   restaurantExists,
   signInUser,
@@ -40,9 +42,12 @@ app.get(
 
 app.post(
   "/api/restaurants",
+  isAuthenticated,
   validateRestaurant,
   wrapAsync(async (req, res) => {
-    const restaurant = await Restaurant.create(req.body.restaurant);
+    const restaurant = new Restaurant(req.body.restaurant);
+    restaurant.author = req.user!.userId;
+    await restaurant.save();
     res.json(restaurant.toObject({ getters: true }));
   })
 );
@@ -58,6 +63,8 @@ app.get(
 
 app.put(
   "/api/restaurants/:id",
+  isAuthenticated,
+  isRestaurantAuthor,
   restaurantExists,
   validateRestaurant,
   wrapAsync(async (req, res) => {
@@ -72,6 +79,8 @@ app.put(
 );
 app.delete(
   "/api/restaurants/:id",
+  isAuthenticated,
+  isRestaurantAuthor,
   restaurantExists,
   wrapAsync(async (req, res) => {
     await Restaurant.findByIdAndDelete(req.params.id);

@@ -13,6 +13,8 @@ import { fetchAllRestaurants } from "./store/restaurants.thunks";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import useAuth from "./hooks/useAuth";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AuthRoute from "./components/AuthRoute";
 
 const MainContainer = styled("div")(() => ({
   display: "flex",
@@ -35,13 +37,41 @@ function App() {
       <Routes>
         <Route path="/" element={<div>Home</div>} />
         <Route path="/restaurants" element={<AllRestaurants />} />
-        <Route path="/restaurants/new" element={<AddRestaurant />} />
+        <Route
+          path="/restaurants/new"
+          element={
+            <ProtectedRoute user={user}>
+              <AddRestaurant />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/restaurants/:id" element={<RestaurantDetail />} />
-        <Route path="/restaurants/:id/edit" element={<EditRestaurant />} />
+        <Route
+          path="/restaurants/:id/edit"
+          element={
+            <ProtectedRoute user={user}>
+              <EditRestaurant />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/about" element={<div>About us</div>} />
         <Route path="/contact" element={<div>Contact us</div>} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/Signup" element={<SignUp />} />
+        <Route
+          path="/signin"
+          element={
+            <AuthRoute user={user}>
+              <SignIn />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <AuthRoute user={user}>
+              <SignUp />
+            </AuthRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

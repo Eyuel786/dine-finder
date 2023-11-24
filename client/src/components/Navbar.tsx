@@ -1,4 +1,10 @@
-import { useState, SyntheticEvent, useEffect, MouseEvent } from "react";
+import {
+  useState,
+  SyntheticEvent,
+  useEffect,
+  MouseEvent,
+  useMemo,
+} from "react";
 import {
   AppBar,
   Toolbar,
@@ -16,7 +22,6 @@ import { styled } from "@mui/material/styles";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import { Link, useLocation } from "react-router-dom";
 import AppDrawer from "./AppDrawer";
-import TABS from "../utils/myTabs";
 import { LogoContainer, LogoText } from "../utils/MyStyledComponents";
 import User from "../types/User";
 import { useAppDispatch } from "../store";
@@ -50,6 +55,24 @@ export default function Navbar({ user }: { user: User }) {
   const matchesMd = useMediaQuery(theme.breakpoints.up("md"));
   const dispatch = useAppDispatch();
 
+  const myPaths = useMemo(() => {
+    const paths = [
+      { name: "Home", pathname: "/" },
+      { name: "Restaurants", pathname: "/restaurants" },
+      { name: "About us", pathname: "/about" },
+      { name: "Contact us", pathname: "/contact" },
+    ];
+
+    if (user.token) {
+      paths.splice(2, 0, {
+        name: "Add Restaurant",
+        pathname: "/restaurants/new",
+      });
+    }
+
+    return paths;
+  }, [user]);
+
   const [tabIndex, setTabIndex] = useState<boolean | number>(false);
 
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -77,9 +100,9 @@ export default function Navbar({ user }: { user: User }) {
   const logout = () => dispatch(signOut());
 
   useEffect(() => {
-    const index = TABS.findIndex((p) => p.pathname === location.pathname);
+    const index = myPaths.findIndex((p) => p.pathname === location.pathname);
     index !== -1 ? setTabIndex(index) : setTabIndex(false);
-  }, [location]);
+  }, [location, myPaths]);
 
   return (
     <>
@@ -95,7 +118,7 @@ export default function Navbar({ user }: { user: User }) {
                 color="primary"
                 fontSize={matchesMd ? "large" : "medium"}
               />
-              <LogoText>DineAdvisor</LogoText>
+              <LogoText>DineFinder</LogoText>
             </LogoContainer>
             {matchesMd && (
               <MyTabs
@@ -103,7 +126,7 @@ export default function Navbar({ user }: { user: User }) {
                 value={tabIndex}
                 onChange={handleTabChange}
               >
-                {TABS.map((p) => (
+                {myPaths.map((p) => (
                   <MyTab
                     key={p.name}
                     label={p.name}
@@ -122,6 +145,8 @@ export default function Navbar({ user }: { user: User }) {
                 onClose={closeDrawer}
                 onToggle={toggleDrawer}
                 selectedTab={tabIndex}
+                myPaths={myPaths}
+                user={user}
               />
             )}
             {matchesMd && !user.token && (

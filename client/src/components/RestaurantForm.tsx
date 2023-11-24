@@ -9,10 +9,10 @@ import {
   validateName,
 } from "../utils/restaurant.validators";
 import useInputState from "../hooks/useInputState";
-import Restaurant from "../types/Restaurant";
+import Restaurant, { RestaurantData } from "../types/Restaurant";
 
 interface AddRestaurantAction {
-  addRestuarant: (restaurant: Omit<Restaurant, "id">) => void;
+  addRestuarant: (restaurant: RestaurantData) => void;
 }
 
 interface EditRestaurantAction {

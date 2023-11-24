@@ -11,9 +11,11 @@ const RestaurantName = styled(Typography)(() => ({
 
 export default function RestaurantDetail() {
   const { id } = useParams();
-  const { restaurants } = useAppSelector((state) => state.restaurants);
   const dispatch = useAppDispatch();
+  const { restaurants } = useAppSelector((state) => state.restaurants);
+  const { user } = useAppSelector((state) => state.auth);
   const restaurant = restaurants.find((r) => r.id === id);
+  const isRestaurantAuthor = restaurant!.author === user.userId;
 
   // TODO Handle cases when restaurant is not found and when it reloads
 
@@ -34,18 +36,20 @@ export default function RestaurantDetail() {
         alt={restaurant.name}
       />
       <Typography sx={{ my: 4 }}>{restaurant.description}</Typography>
-      <div style={{ display: "flex", gap: "0.4rem" }}>
-        <Button
-          variant="contained"
-          component={Link}
-          to={`/restaurants/${restaurant.id}/edit`}
-        >
-          Edit
-        </Button>
-        <Button variant="contained" color="error" onClick={removeRestaurant}>
-          Delete
-        </Button>
-      </div>
+      {isRestaurantAuthor && (
+        <div style={{ display: "flex", gap: "0.4rem" }}>
+          <Button
+            variant="contained"
+            component={Link}
+            to={`/restaurants/${restaurant.id}/edit`}
+          >
+            Edit
+          </Button>
+          <Button variant="contained" color="error" onClick={removeRestaurant}>
+            Delete
+          </Button>
+        </div>
+      )}
     </Container>
   );
 }
