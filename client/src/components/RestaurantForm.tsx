@@ -136,8 +136,6 @@ export default function RestaurantForm(props: RestaurantFormProps) {
     } else {
       props.addRestuarant(restaurantData);
     }
-
-    clearForm();
   };
 
   return (

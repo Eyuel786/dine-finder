@@ -4,9 +4,8 @@ import axios from "axios";
 
 export const sendSignUpRequest = createAsyncThunk<
   User,
-  { username: string; email: string; password: string },
-  { rejectValue: string }
->("auth/sendSignUpRequest", async (userData, { rejectWithValue }) => {
+  { username: string; email: string; password: string }
+>("auth/sendSignUpRequest", async (userData) => {
   try {
     const { data } = await axios.post<User>(
       "http://127.0.0.1:3000/api/register",
@@ -17,15 +16,14 @@ export const sendSignUpRequest = createAsyncThunk<
     localStorage.setItem("dine-finder-user", JSON.stringify(data));
     return data;
   } catch (error) {
-    return rejectWithValue("Failed to send sign up request");
+    throw new Error("Failed to create your account");
   }
 });
 
 export const sendSignInRequest = createAsyncThunk<
   User,
-  { email: string; password: string },
-  { rejectValue: string }
->("auth/sendSignInRequest", async (userData, { rejectWithValue }) => {
+  { email: string; password: string }
+>("auth/sendSignInRequest", async (userData) => {
   try {
     const { data } = await axios.post<User>("http://127.0.0.1:3000/api/login", {
       user: userData,
@@ -33,6 +31,6 @@ export const sendSignInRequest = createAsyncThunk<
     localStorage.setItem("dine-finder-user", JSON.stringify(data));
     return data;
   } catch (error) {
-    return rejectWithValue("Failed to send sign in request");
+    throw new Error("Failed to sign in");
   }
 });

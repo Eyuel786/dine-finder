@@ -73,7 +73,6 @@ app.put(
       req.body.restaurant,
       { new: true, runValidators: true }
     );
-
     res.json(restaurant!.toObject({ getters: true }));
   })
 );

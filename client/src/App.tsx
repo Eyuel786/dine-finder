@@ -15,6 +15,7 @@ import SignIn from "./pages/SignIn";
 import useAuth from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoute from "./components/AuthRoute";
+import MyAlert from "./components/MyAlert";
 
 const MainContainer = styled("div")(() => ({
   display: "flex",
@@ -74,6 +75,7 @@ function App() {
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <MyAlert />
       <Footer />
     </MainContainer>
   );

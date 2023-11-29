@@ -1,6 +1,6 @@
 import { Container, Typography, Divider, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store";
 import { removeRestaurantDB } from "../store/restaurants.thunks";
 
@@ -12,6 +12,7 @@ const RestaurantName = styled(Typography)(() => ({
 export default function RestaurantDetail() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { restaurants } = useAppSelector((state) => state.restaurants);
   const { user } = useAppSelector((state) => state.auth);
   const restaurant = restaurants.find((r) => r.id === id);
@@ -19,7 +20,10 @@ export default function RestaurantDetail() {
 
   // TODO Handle cases when restaurant is not found and when it reloads
 
-  const removeRestaurant = () => dispatch(removeRestaurantDB(restaurant!.id));
+  const removeRestaurant = () => {
+    dispatch(removeRestaurantDB(restaurant!.id));
+    navigate("/restaurants");
+  };
 
   if (!restaurant) return <Navigate to="/notfound" replace />;
 
